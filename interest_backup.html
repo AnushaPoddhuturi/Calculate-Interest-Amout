@@ -1,0 +1,119 @@
+<html>
+   <head>
+      <title> Interest calculators </title>
+   </head>
+   <style>
+      body {    
+    background: lightblue;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+   }
+</style>
+   <body>
+      <label>Principle amount</label>
+      <input type="text" placeholder="Enter amount" id="principle_amount">
+      <br><br>
+      <label>Rate of interest</label>
+      <input type="text" placeholder="Enter rate of interest" id="rate_of_interest"  >
+      <br><br>
+      <label>Enter start date</label>
+      <input type="date" id="start_date" >
+      <br><br>
+      <label>Enter end date</label>
+      <input type="date" id="end_date" >
+      <br><br>
+      <label>Adjust Days</label>
+      <input type="text" id="addays" value="0">
+      <br><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="myFunction()">Submit</button>
+      <br><br>
+      <div style="display:none" id = "result">
+      <label>Months and Days</label>
+      <label id = "month_label"></label>
+      <label >, </label>
+      <label id = "days_label"></label>
+      <br><br>
+      <label>Principle amount</label>   
+      <label id = "principle_amount_label"></label>
+      <br><br>
+      <label>Interest for month</label>    
+      <label id = "intereset_month_label"></label>
+      <br><br>
+      <label>Total</label>    
+      <label id = "total_label"></label>
+      </div>
+      
+      <script>
+         function myFunction() { 
+           var principle = document.getElementById("principle_amount").value;
+           var interest = document.getElementById("rate_of_interest").value;
+           var startDate = document.getElementById("start_date").value;
+           var endDate = document.getElementById("end_date").value;
+           var adjust_days=document.getElementById("addays").value;
+
+           
+            // parse
+            principle = parseInt(principle);
+            interest = parseFloat(interest);
+            // calculation
+          var startDate1 = new Date(startDate);
+          var s_date = startDate1.getDate();
+          var s_month = startDate1.getMonth();
+          var s_year = startDate1.getFullYear();
+          var endDate1 = new Date(endDate);
+
+          endDate1 = endDate1.setDate(endDate1.getDate() + adjust_days * 1);
+          endDate1 = new Date(endDate1);
+
+          var e_Date = endDate1.getDate();
+          var e_month = endDate1.getMonth();
+          var e_year = endDate1.getFullYear();
+          var simple_interest = (principle * interest)/100;
+          var sum=0,no_of_months=0,r_interest=0,no_of_days=0;
+          if(e_Date >= s_date)
+          {
+             no_of_months = (e_year-s_year)*12 + (e_month-s_month);
+             no_of_days = (e_Date-s_date);
+             r_interest = ((e_Date-s_date)*simple_interest)/30;
+          }
+          else
+          {
+            no_of_months = (e_year-s_year)*12 + (e_month-s_month)-1;
+            if(s_date==31){
+              no_of_days=e_Date;
+            }
+            else if((no_of_months==0) && (s_month%2 == 0))
+            {
+               no_of_days=(31-s_date)+e_Date;
+               console.log(no_of_days);
+            }
+            else{
+             no_of_days = (30 - s_date)+e_Date;
+            }
+           r_interest = (no_of_days*simple_interest)/30;
+          }
+          for(let i=0;i<no_of_months;i++)
+          {
+              sum=sum+simple_interest;
+          }
+          sum=sum+principle+r_interest; 
+          //console.log(sum);
+
+          var x = document.getElementById("result"); 
+          x.style.display = "block";
+
+          document.getElementById("month_label").innerHTML = no_of_months;
+          document.getElementById("days_label").innerHTML = no_of_days;
+          document.getElementById("principle_amount_label").innerHTML = principle;
+          document.getElementById("intereset_month_label").innerHTML = simple_interest;
+          document.getElementById("total_label").innerHTML = sum;
+          
+          }
+
+      </script>
+   </body>
+</html>
